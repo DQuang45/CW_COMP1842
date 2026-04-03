@@ -5,14 +5,18 @@ const Schema = moogoose.Schema;
 
 const VocabSchema = new Schema(
     {
-        english: { 
+        key: { 
             type: String, 
-            required: 'English word cannot be blank' 
+            required: 'Issue Code cannot be blank' 
         },
-        german: { 
+        value: { 
             type: String, 
-            required: 'German word cannot be blank'
+            required: 'Response cannot be blank'
         },
+        category: { 
+            type: String, 
+            required: 'Category cannot be blank'
+        }
     },
     {collection: 'vocab'}
 );
