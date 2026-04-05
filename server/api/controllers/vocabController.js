@@ -10,6 +10,14 @@ exports.list_all_words = (req, res) => {
 
 exports.create_a_word = (req, res) => {
     const new_word = new Vocab(req.body);
+    // Create a unique key based on the category and a random number
+    if (req.body.category) {
+    const prefix = req.body.category.toUpperCase().substring(0, 3); // get first 3 letters of category as prefix
+    const randomNum = Math.floor(1000 + Math.random() * 9000); // generate a random 4-digit number
+    new_word.key = `${prefix}-${randomNum}`;
+    } else {
+        new_word.key = `GEN-${Math.floor(1000 + Math.random() * 9000)}`;
+    }
     new_word.save((err, word) => {
         if (err) res.send(err);
         res.json(word);

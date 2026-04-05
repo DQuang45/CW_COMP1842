@@ -1,0 +1,11 @@
+# Bỏ qua tất cả thư mục node_modules ở bất kỳ đâu
+node_modules/
+
+# Bỏ qua các file log và file môi trường (chứa mật khẩu/key)
+*.log
+.env
+.env.local
+
+# Bỏ qua file rác của hệ điều hành
+.DS_Store
+Thumbs.db
