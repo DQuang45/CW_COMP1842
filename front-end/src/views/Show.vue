@@ -9,6 +9,14 @@
         </div>
         <input type="text" readonly :value="word.key"/>
       </div>
+
+      <div class="ui labeled input fluid" style="margin-bottom: 15px;">
+        <div class="ui label">
+          <i class="info circle icon"></i> Issue Description
+        </div>
+        <input type="text" readonly :value="word.description"/>
+      </div>
+
       
       <div class="ui labeled input fluid" style="margin-bottom: 15px;">
         <div class="ui label">

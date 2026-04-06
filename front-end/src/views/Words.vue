@@ -23,6 +23,7 @@
             <thead>
                 <tr>
                     <th>Issue Code</th>
+                    <th>Issue Description</th>
                     <th>Response</th>
                     <th>Category</th>
                     <th>Show</th>
@@ -33,6 +34,7 @@
             <tbody>
                 <tr v-for="word in words" :key="word._id">
                     <td>{{ word.key }}</td>
+                    <td>{{ word.description }}</td>
                     <td>{{ word.value }}</td>
                     <td>{{ word.category }}</td>
                     

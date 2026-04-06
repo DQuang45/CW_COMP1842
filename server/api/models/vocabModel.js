@@ -9,6 +9,10 @@ const VocabSchema = new Schema(
             type: String, 
             required: 'Issue Code cannot be blank' 
         },
+        description: { 
+            type: String, 
+            required: 'Description cannot be blank'
+        },
         value: { 
             type: String, 
             required: 'Response cannot be blank'

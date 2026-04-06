@@ -13,6 +13,11 @@
             :value="localWord.key"
           />
         </div>
+
+        <div class="ui labeled input fluid" style="margin-bottom: 15px;">
+            <div class="ui label"><i class="info circle icon"></i> Issue Description</div>
+            <input type="text" placeholder="Ví dụ: User forgot their login password..." v-model="localWord.description">
+        </div>
         
         <div class="ui labeled input fluid" style="margin-bottom: 15px;">
             <div class="ui label"><i class="comment alternate icon"></i> Standard Response</div>
@@ -62,23 +67,30 @@ export default {
   },
   methods: {
     onSubmit() {
-      // 1. Kiểm tra trên localWord (dữ liệu người dùng thực sự nhập vào)
-      if (!this.localWord.value || !this.localWord.category) {
-        this.errorsPresent = true; // Bật dòng chữ đỏ lên
+      // 1. Thêm localWord.description vào điều kiện bắt lỗi
+      if (!this.localWord.value || !this.localWord.category || !this.localWord.description) {
+        this.errorsPresent = true; 
         if (this.flash) this.flash('Please fill out all fields!', 'error');
         return;
       }
       
-      // Tắt lỗi đi nếu đã nhập đúng
       this.errorsPresent = false; 
 
-      // 2. Gói dữ liệu
+      // 2. Nhớ gói thêm description vào dataToSend
       const dataToSend = {
+        description: this.localWord.description,
         value: this.localWord.value,
         category: this.localWord.category
       };
 
-      // 3. Bắn tín hiệu 'createOrUpdate' (khớp với @createOrUpdate bên file New.vue)
+      if (this.localWord.key) {
+        dataToSend.key = this.localWord.key;
+      }
+
+      if (this.localWord._id) {
+        dataToSend._id = this.localWord._id;
+      }
+
       this.$emit('createOrUpdate', dataToSend); 
     }
   }
