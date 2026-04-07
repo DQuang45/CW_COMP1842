@@ -19,6 +19,15 @@
             </div>
         </div>
 
+        <div class="ui fluid icon input" style="margin-bottom: 20px;">
+            <input 
+                type="text" 
+                placeholder="Search by Issue Code, Description, Category or Response..." 
+                v-model="searchQuery"
+            >
+        <i class="search icon"></i>
+        </div>
+
         <table id="words" class="ui celled compact table">
             <thead>
                 <tr>
@@ -32,7 +41,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="word in words" :key="word._id">
+                <tr v-for="(word, i) in filteredWords" :key="i">
                     <td>{{ word.key }}</td>
                     <td>{{ word.description }}</td>
                     <td>{{ word.value }}</td>
@@ -63,11 +72,34 @@ export default {
     data() {
         return {
             words: [],
+            searchQuery: '',
             currentUserRole: 'user',
             secretToken: '',
-            CORRECT_TOKEN: 'admin123' 
+            CORRECT_TOKEN: 'admin123'
         }
     },
+    computed: {
+    filteredWords() {
+      // Nếu không gõ gì vào ô search, trả về toàn bộ dữ liệu gốc
+      if (!this.searchQuery) {
+        return this.words;
+      }
+      
+      // Chuyển từ khóa về chữ thường để tìm kiếm không phân biệt hoa/thường
+      const lowerCaseQuery = this.searchQuery.toLowerCase();
+      
+      // Lọc mảng words: Giữ lại những dòng mà 1 trong 4 cột có chứa từ khóa
+      return this.words.filter(word => {
+        return (
+          (word.key && word.key.toLowerCase().includes(lowerCaseQuery)) ||
+          (word.description && word.description.toLowerCase().includes(lowerCaseQuery)) ||
+          (word.value && word.value.toLowerCase().includes(lowerCaseQuery)) ||
+          (word.category && word.category.toLowerCase().includes(lowerCaseQuery))
+            );
+        });
+        }
+    },
+
     async mounted() {
         this.words = await api.getWords();
         
@@ -100,7 +132,7 @@ export default {
                 this.flash('Word deleted successfully!', 'success');
                 this.words = this.words.filter(word => word._id !== id);
             } catch (error) {
-                console.error("Lỗi khi xoá:", error);
+                console.error("error:", error);
             }
         }
     }
