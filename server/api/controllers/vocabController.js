@@ -32,7 +32,7 @@ exports.read_a_word = (req, res) => {
 };
 
 exports.update_a_word = (req, res) => {
-  // THÊM DÒNG NÀY: Xoá _id ra khỏi cục dữ liệu gửi lên để MongoDB không chửi
+  // delete the _id field from the request body to prevent issues with MongoDB
   if (req.body._id) {
       delete req.body._id;
   }

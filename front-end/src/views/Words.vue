@@ -80,15 +80,14 @@ export default {
     },
     computed: {
     filteredWords() {
-      // Nếu không gõ gì vào ô search, trả về toàn bộ dữ liệu gốc
+      // if empty search query, return all words
       if (!this.searchQuery) {
         return this.words;
       }
       
-      // Chuyển từ khóa về chữ thường để tìm kiếm không phân biệt hoa/thường
       const lowerCaseQuery = this.searchQuery.toLowerCase();
       
-      // Lọc mảng words: Giữ lại những dòng mà 1 trong 4 cột có chứa từ khóa
+      // Filter the words array by retaining entries where at least one of the four fields includes the search keyword
       return this.words.filter(word => {
         return (
           (word.key && word.key.toLowerCase().includes(lowerCaseQuery)) ||
@@ -107,7 +106,7 @@ export default {
         if (savedToken === this.CORRECT_TOKEN) {
             this.secretToken = savedToken;
             this.currentUserRole = 'admin';
-            // Phát tín hiệu cho App.vue biết
+            // Emit a signal to notify App.vue
             window.dispatchEvent(new CustomEvent('auth-change')); 
         }
     },
@@ -120,7 +119,7 @@ export default {
                 this.currentUserRole = 'user';
                 localStorage.removeItem('admin_token');
             }
-            // Phát tín hiệu mỗi khi nhập đúng/sai để menu cập nhật tức thì
+            // An event is emitted whenever the validation status changes, allowing the menu to update in real time 
             window.dispatchEvent(new CustomEvent('auth-change'));
         },
         async onDestroy(id) {

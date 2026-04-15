@@ -60,45 +60,45 @@ export default {
   name: 'quiz-page',
   data() {
     return {
-      words: [], // Lưu toàn bộ data từ CRUD
-      currentQuestion: {}, // Câu hỏi hiện tại
-      options: [], // 4 đáp án (1 đúng, 3 sai)
+      words: [], 
+      currentQuestion: {}, 
+      options: [], 
       score: 0,
       totalAsked: 0,
-      hasAnswered: false, // Trạng thái đã chọn đáp án chưa
+      hasAnswered: false, 
       isCorrect: false,
-      selectedOption: null // Lưu lại đáp án user đã bấm
+      selectedOption: null 
     };
   },
   async mounted() {
-    // 1. Lấy toàn bộ dữ liệu từ database khi mở trang
+    // 1. Fetch all data from the database
     this.words = await api.getWords();
     
-    // 2. Nếu đủ data thì tạo câu hỏi luôn
+      // 2.If there are at least 4 entries, generate the first question
     if (this.words.length >= 4) {
       this.generateQuestion();
     }
   },
   methods: {
     generateQuestion() {
-      // Reset trạng thái
+      // Reset status
       this.hasAnswered = false;
       this.selectedOption = null;
 
-      // Chọn ngẫu nhiên 1 câu làm câu hỏi chính
+      // randomly select a question from the words array
       const randomIndex = Math.floor(Math.random() * this.words.length);
       this.currentQuestion = this.words[randomIndex];
 
-      // Lọc ra các câu KHÔNG phải là câu chính để làm đáp án sai (Distractors)
+      // filter out the current question to get only the wrong answers
       const wrongAnswers = this.words.filter(w => w._id !== this.currentQuestion._id);
       
-      // Xáo trộn mảng đáp án sai và lấy 3 câu đầu tiên
+      // Randomly shuffle the wrong answers and take the first 3
       const shuffledWrong = wrongAnswers.sort(() => 0.5 - Math.random()).slice(0, 3);
 
-      // Gộp 1 câu đúng và 3 câu sai lại
+      // Combine the correct answer with the 3 wrong answers to create the options array
       let allOptions = [this.currentQuestion, ...shuffledWrong];
 
-      // Xáo trộn vị trí 4 đáp án này để câu đúng không phải lúc nào cũng nằm đầu
+      // Randomly shuffle the options so the correct answer isn't always in the same position
       this.options = allOptions.sort(() => 0.5 - Math.random());
     },
 
@@ -115,19 +115,19 @@ export default {
       }
     },
 
-    // Đổi màu nút sau khi người dùng bấm
+    // This function returns a CSS class for the button based on the selected state and whether the answer is correct or incorrect
     getButtonClass(option) {
-      if (!this.hasAnswered) return 'basic'; // Trạng thái bình thường
+      if (!this.hasAnswered) return 'basic'; 
       
       if (option._id === this.currentQuestion._id) {
-        return 'positive'; // Luôn tô xanh đáp án đúng
+        return 'positive'; 
       }
       
       if (option._id === this.selectedOption?._id && !this.isCorrect) {
-        return 'negative'; // Tô đỏ nếu user bấm sai
+        return 'negative'; 
       }
 
-      return 'basic disabled'; // Các nút còn lại làm mờ đi
+      return 'basic disabled';
     }
   }
 };

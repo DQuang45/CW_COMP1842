@@ -53,7 +53,7 @@ export default {
   },
   data() {
     return {
-      errorsPresent: false, // Biến này để bật/tắt dòng báo lỗi đỏ
+      errorsPresent: false, 
       localWord: { ...this.word } 
     }
   },
@@ -67,7 +67,7 @@ export default {
   },
   methods: {
     onSubmit() {
-      // 1. Thêm localWord.description vào điều kiện bắt lỗi
+      // Validation: Ensure all fields are filled out before submission
       if (!this.localWord.value || !this.localWord.category || !this.localWord.description) {
         this.errorsPresent = true; 
         if (this.flash) this.flash('Please fill out all fields!', 'error');
@@ -76,7 +76,7 @@ export default {
       
       this.errorsPresent = false; 
 
-      // 2. Nhớ gói thêm description vào dataToSend
+      // structure the data to send
       const dataToSend = {
         description: this.localWord.description,
         value: this.localWord.value,

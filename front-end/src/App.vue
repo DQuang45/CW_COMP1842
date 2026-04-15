@@ -38,10 +38,10 @@ export default {
     }
   },
   mounted() {
-    // Kểm tra quyền lúc mới f5 trang
+    // check if the user is admin when the app loads
     this.checkAuth(); 
     
-    // Lắng nghe tín hiệu khi gõ mật khẩu bên trang words.vue
+    // 
     window.addEventListener('auth-change', this.checkAuth);
   },
   beforeDestroy() {
@@ -49,7 +49,6 @@ export default {
   },
   methods: {
     checkAuth() {
-      // Nếu token trong bộ nhớ đúng thì bật isAdmin = true
       this.isAdmin = localStorage.getItem('admin_token') === 'admin123';
     }
   }
