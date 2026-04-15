@@ -43,8 +43,8 @@
             <tbody>
                 <tr v-for="(word, i) in filteredWords" :key="i">
                     <td>{{ word.key }}</td>
-                    <td>{{ word.description }}</td>
-                    <td>{{ word.value }}</td>
+                    <td class="truncate-text" :title="word.description">{{ word.description }}</td>
+                    <td class="truncate-text" :title="word.value">{{ word.value }}</td>
                     <td>{{ word.category }}</td>
                     
                     <td width="75" class="center aligned">
@@ -143,5 +143,17 @@ export default {
 .ui.segment.secondary {
     margin-bottom: 20px;
     background-color: #f3f4f5;
+}
+.truncate-text {
+  max-width: 250px; 
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+
+table {
+  table-layout: fixed;
+  width: 100%;
 }
 </style>
